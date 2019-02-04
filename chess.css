@@ -1,0 +1,10 @@
+#chessBoard {
+  width: 800px;
+  height: 800px;
+  border: 5px solid black;
+  display: flex;
+}
+#chessBoard * * {
+  width: 100px;
+  height: 100px;
+}
