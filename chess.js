@@ -1,17 +1,30 @@
-// I need to create a function that moves an image element from one place to another
+function allowDrop(ev) {
+  ev.preventDefault();
+}
 
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+// Above functions enable moving one piece from one tile to another
 function generateChessBoard() {
   /*Loops through each column then through each row in that column, then repeats
   Until the board is filled up with tiles and divs
   with specific ids determining the row and column with a c & r followed by a number for each*/
+  $('body').append('<div id="chessBoard"></div>')
   for (var i = 0; i < 8; i++) {
     $('#chessBoard').append(`<div class="column" id="c${i}"></div>`);
     for (var j = 0; j < 8; j++) {
       if (((j % 2 == 0) && (i % 2 == 0)) || ((i % 2 == 1) && (j % 2 == 1))) {
-        $(`#c${i}`).append(`<div class="tile" id="c${i}r${j}"></div>`);
+        $(`#c${i}`).append(`<div class="tile" ondrop="drop(event)" ondragover="allowDrop(event)" id="c${i}r${j}"></div>`);
         $(`#c${i}r${j}`).css("background-color", '#C0C0C0');
       } else {
-        $(`#c${i}`).append(`<div class="tile" id="c${i}r${j}"></div>`);
+        $(`#c${i}`).append(`<div class="tile" ondrop="drop(event)" ondragover="allowDrop(event)" id="c${i}r${j}"></div>`);
         $(`#c${i}r${j}`).css("background-color", '#404040');
       }
     }
@@ -19,24 +32,37 @@ function generateChessBoard() {
 }
 
 function generateChessPieces() {
-  //Loops through the pawn row (row 6) and adds images to each tile
+  //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
   for (var i = 0; i < 8; i++) {
-    $(`#c${i}r6`).append('<img src="svg/wPawn.svg">');
-    $(`#c${i}r1`).append('<img src="svg/bPawn.svg">');
+    $(`#c${i}r6`).append(`<img id="wp${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
+    $(`#c${i}r1`).append(`<img id="bp${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
-  $('#c0r7, #c7r7').append('<img src="svg/wRook.svg">');
-  $('#c1r7, #c6r7').append('<img src="svg/wKnight.svg">');
-  $('#c2r7, #c5r7').append('<img src="svg/wBishop.svg">');
-  $('#c3r7').append('<img src="svg/wQueen.svg">');
-  $('#c4r7').append('<img src="svg/wKing.svg">');
-  $('#c0r0, #c7r0').append('<img src="svg/bRook.svg">');
-  $('#c1r0, #c6r0').append('<img src="svg/bKnight.svg">');
-  $('#c2r0, #c5r0').append('<img src="svg/bBishop.svg">');
-  $('#c3r0').append('<img src="svg/bQueen.svg">');
-  $('#c4r0').append('<img src="svg/bKing.svg">');
+  //Generate black pieces below
+  $('#c0r7').append('<img id="wRook0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
+  $('#c1r7').append('<img id="wKnight0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
+  $('#c2r7').append('<img id="wBishop0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
+  $('#c3r7').append('<img id="wQueen" class="white" ondragstart="drag(event)" draggable="true" src="svg/wQueen.svg">');
+  $('#c4r7').append('<img id="wKing" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKing.svg">');
+  $('#c5r7').append('<img id="wBishop1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
+  $('#c6r7').append('<img id="wKnight1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
+  $('#c7r7').append('<img id="wRook1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
+  //Generate white pieces below
+  $('#c0r0').append('<img id="bRook0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  $('#c1r0').append('<img id="bKnight0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
+  $('#c2r0').append('<img id="bBishop0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
+  $('#c3r0').append('<img id="bQueen" class="black" ondragstart="drag(event)" draggable="true" src="svg/bQueen.svg">');
+  $('#c4r0').append('<img id="bKing" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKing.svg">');
+  $('#c5r0').append('<img id="bBishop1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
+  $('#c6r0').append('<img id="bKnight1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
+  $('#c7r0').append('<img id="bRook1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+}
+
+function iff() {
+
 }
 //Below functions are empty
 function movementRestriction() {
+
   function pawn() {
     /*
     I need to calulate the squares relative to  the position of the pawn and determine which are allowable moving positions
@@ -119,3 +145,4 @@ function updateGame() {
 
 generateChessBoard();
 generateChessPieces();
+movement();
