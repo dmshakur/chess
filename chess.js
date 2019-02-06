@@ -1,3 +1,4 @@
+//=============================+
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -5,12 +6,21 @@ function allowDrop(ev) {
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
-
+// Below function also serves as an IFF and score counter.
 function drop(ev) {
-  ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
+  if (ev.target.className == data) {
+    return; //IFF
+  } else if (ev.target.id.charAt(0) != 't') {
+    let temp = ev.target;
+    ev.preventDefault();
+    ev.target.appendChild(document.getElementById(data));
+  } else {
+    ev.preventDefault();
+    ev.target.appendChild(document.getElementById(data));
+  }
 }
+//=============================+
 // Above functions enable moving one piece from one tile to another
 function generateChessBoard() {
   /*Loops through each column then through each row in that column, then repeats
@@ -34,8 +44,8 @@ function generateChessBoard() {
 function generateChessPieces() {
   //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
   for (var i = 0; i < 8; i++) {
-    $(`#c${i}r6`).append(`<img id="wp${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
-    $(`#c${i}r1`).append(`<img id="bp${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
+    $(`#c${i}r6`).append(`<img id="wP${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
+    $(`#c${i}r1`).append(`<img id="bP${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
   //Generate black pieces below
   $('#c0r7').append('<img id="wRook0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
@@ -55,10 +65,6 @@ function generateChessPieces() {
   $('#c5r0').append('<img id="bBishop1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
   $('#c6r0').append('<img id="bKnight1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
   $('#c7r0').append('<img id="bRook1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
-}
-
-function iff() {
-
 }
 //Below functions are empty
 function movementRestriction() {
@@ -82,6 +88,7 @@ function movementRestriction() {
     locations, where column or c, will be calculated as either '-1', or '+ 1'.
     All positive and negative positions will be calculated in reverse for the opposition.
     */
+
   }
 
   function knight() {
@@ -145,4 +152,3 @@ function updateGame() {
 
 generateChessBoard();
 generateChessPieces();
-movement();
