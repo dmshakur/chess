@@ -8,14 +8,17 @@ function drag(ev) {
 }
 // Below function also serves as an IFF and score counter.
 function drop(ev) {
-  var data = ev.dataTransfer.getData("text");
-  if (ev.target.className == data) {
-    return; //IFF
-  } else if (ev.target.id.charAt(0) != 't') {
-    let temp = ev.target;
+  var data = ev.dataTransfer.getData("text"); // This variable stores the moving piece's picture
+  // ev.target.id is the element being selected or where the piece is moving to
+  console.log(ev.target.id);
+  if (ev.target.id.charAt(0) == data.charAt(0)) {
+    return;
+    // Above if statement is the IFF
+  } else if (ev.target.id.charAt(0) != 'c') {
     ev.preventDefault();
-    ev.target.appendChild(document.getElementById(data));
+    ev.target.parentNode.replaceChild(document.getElementById(data), ev.target);
   } else {
+    //Below code moves the piece
     ev.preventDefault();
     ev.target.appendChild(document.getElementById(data));
   }
@@ -48,23 +51,23 @@ function generateChessPieces() {
     $(`#c${i}r1`).append(`<img id="bP${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
   //Generate black pieces below
-  $('#c0r7').append('<img id="wRook0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
-  $('#c1r7').append('<img id="wKnight0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
-  $('#c2r7').append('<img id="wBishop0" class="white" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
-  $('#c3r7').append('<img id="wQueen" class="white" ondragstart="drag(event)" draggable="true" src="svg/wQueen.svg">');
-  $('#c4r7').append('<img id="wKing" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKing.svg">');
-  $('#c5r7').append('<img id="wBishop1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
-  $('#c6r7').append('<img id="wKnight1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
-  $('#c7r7').append('<img id="wRook1" class="white" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
+  $('#c0r7').append('<img id="wRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
+  $('#c1r7').append('<img id="wKnight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
+  $('#c2r7').append('<img id="wBishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
+  $('#c3r7').append('<img id="wQueen" class="queen" ondragstart="drag(event)" draggable="true" src="svg/wQueen.svg">');
+  $('#c4r7').append('<img id="wKing" class="king" ondragstart="drag(event)" draggable="true" src="svg/wKing.svg">');
+  $('#c5r7').append('<img id="wBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
+  $('#c6r7').append('<img id="wKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
+  $('#c7r7').append('<img id="wRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
   //Generate white pieces below
-  $('#c0r0').append('<img id="bRook0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
-  $('#c1r0').append('<img id="bKnight0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
-  $('#c2r0').append('<img id="bBishop0" class="black" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
-  $('#c3r0').append('<img id="bQueen" class="black" ondragstart="drag(event)" draggable="true" src="svg/bQueen.svg">');
-  $('#c4r0').append('<img id="bKing" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKing.svg">');
-  $('#c5r0').append('<img id="bBishop1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
-  $('#c6r0').append('<img id="bKnight1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
-  $('#c7r0').append('<img id="bRook1" class="black" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  $('#c0r0').append('<img id="bRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  $('#c1r0').append('<img id="bKnight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
+  $('#c2r0').append('<img id="bBishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
+  $('#c3r0').append('<img id="bQueen" class="queen" ondragstart="drag(event)" draggable="true" src="svg/bQueen.svg">');
+  $('#c4r0').append('<img id="bKing" class="king" ondragstart="drag(event)" draggable="true" src="svg/bKing.svg">');
+  $('#c5r0').append('<img id="bBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
+  $('#c6r0').append('<img id="bKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
+  $('#c7r0').append('<img id="bRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
 }
 //Below functions are empty
 function movementRestriction() {
@@ -146,7 +149,7 @@ function movementRestriction() {
   }
 }
 
-function updateGame() {
+function checkmate() {
 
 }
 
