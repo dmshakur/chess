@@ -1,8 +1,10 @@
-let moveArr = []; //Complete
+let moveArr = [];
+//Complete
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
-} // Complete
+}
+// Complete
 
 function drag(ev) {
   let pieceFunk = window[ev.target.id.slice(1, -1)];
@@ -10,6 +12,7 @@ function drag(ev) {
   moveArr = pieceFunk(ev.target.parentNode.id);
   ev.dataTransfer.setData("text", ev.target.id);
 }
+// Complete
 
 function drop(ev) {
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
@@ -33,7 +36,8 @@ function drop(ev) {
     }
   }
   moveArr = [];
-} //Complete
+}
+// Complete
 //+=============================+//
 function generateChessBoard() {
   /*Loops through each column then through each row in that column, then repeats
@@ -52,7 +56,8 @@ function generateChessBoard() {
       }
     }
   }
-} //Complete
+}
+// Complete
 
 function generateChessPieces() {
 
@@ -90,7 +95,8 @@ function generateChessPieces() {
     "width": "100px",
     "height": "100px"
   });
-} //Complete
+}
+// Complete
 
 function wPawn(t) {
   let one = Number(t[1]);
@@ -110,7 +116,8 @@ function wPawn(t) {
     arr[0] = null;
   }
   return arr;
-} // Complete
+}
+// Complete
 
 function bPawn(t) {
   let one = Number(t[1]);
@@ -130,7 +137,8 @@ function bPawn(t) {
     arr[0] = null;
   }
   return arr;
-} // Complete
+}
+// Complete
 
 function Knight(t) {
   /*
@@ -156,7 +164,8 @@ function Knight(t) {
   let arr = [`c${one-1}r${three-2}`, `c${one+1}r${three-2}`, `c${one+2}r${three-1}`, `c${one+2}r${three+1}`, `c${one+1}r${three+2}`, `c${one-1}r${three+2}`, `c${one-2}r${three+2}`, `c${one-2}r${three-1}`];
 
   return arr;
-} // Complete
+}
+// Complete
 
 function Bishop(t) {
   /*
@@ -190,7 +199,14 @@ function King(t) {
   7. -1 +0
   --------
   */
+  let one = Number(t[1]);
+  let three = Number(t[3]);
+  // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
+  let arr = [`c${one-1}r${three-1}`, `c${one+0}r${three-1}`, `c${one-1}r${three-1}`, `c${one+1}r${three+0}`, `c${one+1}r${three+1}`, `c${one+0}r${three+1}`, `c${one-1}r${three+1}`, `c${one-1}r${three+0}`];
+
+  return arr;
 }
+// Complete
 
 function checkmate() {
 
