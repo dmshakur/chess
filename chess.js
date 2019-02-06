@@ -5,19 +5,21 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-  moveArr = pawn(ev.target.parentNode.id);
+  moveArr = wPawn(ev.target.parentNode.id);
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function drop(ev) {
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
   for (let i = 0; i < moveArr.length; i++) {
-    if ((moveArr[i] == ev.target.id) || (moveArr[i] == ev.target.id)) {
+
+    if ((moveArr[i] == ev.target.id) || (moveArr[i] == ev.target.parentNode.id && (ev.target.id[0] == 'b'))) {
       //=============
-      if (ev.target.id.charAt(0) == data.charAt(0)) { //This if statement is the IFF
+      if (ev.target.id[0] == data[0]) { //This if statement is the IFF
+        moveArr = [];
         return;
 
-      } else if (ev.target.id.charAt(0) != 'c') { //This else if statement removes the opposing piece while checking the first letter in the id, if it is c then it is an empty tile
+      } else if (ev.target.id[0] != 'c') { //This else if statement removes the opposing piece while checking the first letter in the id, if it is c then it is an empty tile
         ev.preventDefault();
         ev.target.parentNode.replaceChild(document.getElementById(data), ev.target);
 
@@ -88,7 +90,7 @@ function generateChessPieces() {
   });
 }
 
-function pawn(t) {
+function wPawn(t) {
   let one = Number(t[1]);
   let three = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
@@ -106,6 +108,26 @@ function pawn(t) {
     arr[0] = null;
   }
   console.log(arr);
+  return arr;
+}
+
+function bPawn(t) {
+  let one = Number(t[1]);
+  let three = Number(t[3]);
+  // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
+  let arr = [`c${one}r${three+1}`, `c${one}r${three+2}`, `c${one+1}r${three+1}`, `c${one-1}r${three+1}`];
+  if (($(`#c${one-1}r${three+1}`).children().length) == 0) {
+    arr[3] = null;
+  }
+  if ($(`#c${one+1}r${three+1}`).children().length == 0) {
+    arr[2] = null;
+  }
+  if (three != 6) {
+    arr[1] = null;
+  }
+  if (($(`#c${one}r${three+1}`).children().length) != 0) {
+    arr[0] = null;
+  }
   return arr;
 }
 
