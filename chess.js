@@ -5,7 +5,9 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-  moveArr = wPawn(ev.target.parentNode.id);
+  // let idSplicer = (ev.target.className).slice(1, -1);
+  moveArr = bPawn(ev.target.parentNode.id); //idSplicer(ev.target.parentNode.id);
+  // console.log(idSplicer, moveArr);
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
@@ -13,7 +15,7 @@ function drop(ev) {
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
   for (let i = 0; i < moveArr.length; i++) {
 
-    if ((moveArr[i] == ev.target.id) || (moveArr[i] == ev.target.parentNode.id && (ev.target.id[0] == 'b'))) {
+    if ((moveArr[i] == ev.target.id) || (moveArr[i] == ev.target.parentNode.id && (ev.target.id[0] != 'c'))) {
       //=============
       if (ev.target.id[0] == data[0]) { //This if statement is the IFF
         moveArr = [];
@@ -116,18 +118,20 @@ function bPawn(t) {
   let three = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
   let arr = [`c${one}r${three+1}`, `c${one}r${three+2}`, `c${one+1}r${three+1}`, `c${one-1}r${three+1}`];
+  console.log(arr);
   if (($(`#c${one-1}r${three+1}`).children().length) == 0) {
     arr[3] = null;
   }
   if ($(`#c${one+1}r${three+1}`).children().length == 0) {
     arr[2] = null;
   }
-  if (three != 6) {
+  if (three != 1) {
     arr[1] = null;
   }
   if (($(`#c${one}r${three+1}`).children().length) != 0) {
     arr[0] = null;
   }
+  console.log(arr);
   return arr;
 }
 
