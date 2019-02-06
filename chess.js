@@ -1,3 +1,14 @@
+const moves = {
+  "king": 8,
+  "queen": 8,
+  "rook": 4,
+  "bishop": 4,
+  "knight": 8,
+  "pawn": 4
+} // Will probably delete
+let globalId = [];
+let globalPiece = "";
+
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
@@ -5,26 +16,38 @@ function allowDrop(ev) {
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
+  globalPiece = "";
+  globalId = [];
+  globalPiece = ev.target.className;
+  globalId = pawn(ev.target);
 }
-// Below function also serves as an IFF and score counter.
+
 function drop(ev) {
-  var data = ev.dataTransfer.getData("text"); // This variable stores the moving piece's picture
-  // ev.target.id is the element being selected or where the piece is moving to
-  console.log(ev.target.id);
-  if (ev.target.id.charAt(0) == data.charAt(0)) {
-    return;
-    // Above if statement is the IFF
-  } else if (ev.target.id.charAt(0) != 'c') {
-    ev.preventDefault();
-    ev.target.parentNode.replaceChild(document.getElementById(data), ev.target);
-  } else {
-    //Below code moves the piece
-    ev.preventDefault();
-    ev.target.appendChild(document.getElementById(data));
+  let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
+
+  for (var i = 0; i < globalId.length; i++) {
+    if (ev.target.id == globalId[i]) {
+      if (ev.target.id.charAt(0) == data.charAt(0)) { //This if statement is the IFF
+        globalId = [];
+        globalPiece = "";
+        return;
+
+      } else if (ev.target.id.charAt(0) != 'c') { //This else if statement removes the opposing piece while checking the first letter in the id, if it is c then it is an empty tile
+        ev.preventDefault();
+        ev.target.parentNode.replaceChild(document.getElementById(data), ev.target);
+
+      } else { //Below code moves the piece to an empty square
+        ev.preventDefault();
+        ev.target.appendChild(document.getElementById(data));
+      }
+    } else {
+      continue;
+    }
   }
+  globalId = [];
+  globalPiece = "";
 }
-//=============================+
-// Above functions enable moving one piece from one tile to another
+//+=============================+//
 function generateChessBoard() {
   /*Loops through each column then through each row in that column, then repeats
   Until the board is filled up with tiles and divs
@@ -45,10 +68,12 @@ function generateChessBoard() {
 }
 
 function generateChessPieces() {
+
   //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
+
   for (var i = 0; i < 8; i++) {
-    $(`#c${i}r6`).append(`<img id="wP${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
-    $(`#c${i}r1`).append(`<img id="bP${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
+    $(`#c${i}r6`).append(`<img id="wPawn${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
+    $(`#c${i}r1`).append(`<img id="bPawn${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
   //Generate black pieces below
   $('#c0r7').append('<img id="wRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
@@ -68,85 +93,86 @@ function generateChessPieces() {
   $('#c5r0').append('<img id="bBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
   $('#c6r0').append('<img id="bKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
   $('#c7r0').append('<img id="bRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  $('#chessBoard').css({
+    "width": "800px",
+    "height": "800px",
+    "border": "20px solid #232323",
+    "display": "flex"
+  });
+  $('#chessBoard * *').css({
+    "width": "100px",
+    "height": "100px"
+  });
 }
-//Below functions are empty
-function movementRestriction() {
 
-  function pawn() {
-    /*
-    I need to calulate the squares relative to  the position of the pawn and determine which are allowable moving positions
-    A pawn can be on starting square as a white piece c1r7 (The second from the left) and would only be
-    able to move to c1r6, c1r5 or if there is a piece available for capture then two squares being c0r6 and c2r6
-            c1r5
-             I
-      c0r6  c1r6 c2r6
-          \  I  /
-            c1r7
-    I need to calulate the c position based on whether or not there are enemies in adjacent squares, if so then
-    the c position will be the current position minus or plus 1.
-    The r position will need to be calculated in determinance of whether or not there are any friendly units in the frontal
-    square, or the second square up if it is located in the starting position.
-    Row or r will be calulated to be '- 1', unless it is moving up two spaces from the stating position the r will be '- 2'.
-    Column or c will be calculated as being the same unless there are either one or two captureable pieces at the frontal, diagnal
-    locations, where column or c, will be calculated as either '-1', or '+ 1'.
-    All positive and negative positions will be calculated in reverse for the opposition.
-    */
+function pawn(t) {
+  // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
+  let arr = [`c${t.charAt(1)}r${t.charAt(3)-1}`, `c${t.charAt(1)}r${t.charAt(3)-2}`, `c${(t.charAt(1))-1}r${t.charAt(3)-1}`, `c${(t.charAt(1))+1}r${t.charAt(3)-1}`];
 
+  if ($(`#${arr[2]}`).children().length == 0) {
+    arr.filter(string => string != arr[2]);
   }
-
-  function knight() {
-    /*
-      Made a diagram for this particular piece since it would be less accurateley interpretable.
-      But I will lay out the calculations for the possible movements.
-      Going clockwise around starting with the upper left possible move position.
-      Assuming you're looking at the board from the white side and that up is towards row 0.
-        ----c--r
-        0. -1 -2
-        1. +1 -2
-        2. +2 -1
-        3. +2 +1
-        4. +1 +2
-        5. -1 +2
-        6. -2 +2
-        7. -2 -1
-        --------
-        Calculations will work for both black and white, negating possible positions with allied pieces and negative or 8 plus positions.
-    */
+  if ($(`#${arr[3]}`).children().length == 0) {
+    arr.filter(string => string != arr[3]);
   }
-
-  function bishop() {
-    /*
-
-    */
+  if (t.charAt(3) != 6) {
+    arr.filter(string => string != arr[1]);
   }
+  return arr;
+}
 
-  function rook() {
-    /*
-    A bit simpler than the rest. It will have a r position that will not change but the c position will
-    be any c position on the board, barring blocking pieces. The exact reverse will function just as well.
-    */
-  }
+function knight(t) {
+  /*
+    Made a diagram for this particular piece since it would be less accurateley interpretable.
+    But I will lay out the calculations for the possible movements.
+    Going clockwise around starting with the upper left possible move position.
+    Assuming you're looking at the board from the white side and that up is towards row 0.
+      ----c--r
+      0. -1 -2
+      1. +1 -2
+      2. +2 -1
+      3. +2 +1
+      4. +1 +2
+      5. -1 +2
+      6. -2 +2
+      7. -2 -1
+      --------
+      Calculations will work for both black and white, negating possible positions with allied pieces and negative or 8 plus positions.
+  */
+}
 
-  function queen() {
-    /*
-    Combine rook and bishop position calculation.
-    */
-  }
+function bishop(t) {
+  /*
 
-  function king() {
-    /*
-    ----c--r
-    0. -1 -1
-    1. +0 -1
-    2. -1 -1
-    3. +1 +0
-    4. +1 +1
-    5. +0 +1
-    6. -1 +1
-    7. -1 +0
-    --------
-    */
-  }
+  */
+}
+
+function rook(t) {
+  /*
+  A bit simpler than the rest. It will have a r position that will not change but the c position will
+  be any c position on the board, barring blocking pieces. The exact reverse will function just as well.
+  */
+}
+
+function queen(t) {
+  /*
+  Combine rook and bishop position calculation.
+  */
+}
+
+function king(t) {
+  /*
+  ----c--r
+  0. -1 -1
+  1. +0 -1
+  2. -1 -1
+  3. +1 +0
+  4. +1 +1
+  5. +0 +1
+  6. -1 +1
+  7. -1 +0
+  --------
+  */
 }
 
 function checkmate() {
@@ -155,3 +181,28 @@ function checkmate() {
 
 generateChessBoard();
 generateChessPieces();
+/******** PAWN NOTES***************************************************************************************************
+I need to calulate the squares relative to  the position of the pawn and determine which are allowable moving positions
+A pawn can be on starting square as a white piece c1r7 (The second from the left) and would only be
+able to move to c1r6, c1r5 or if there is a piece available for capture then two squares being c0r6 and c2r6
+       c1r5
+        I
+  c0r6 c1r6 c2r6
+     \  I  /
+      c1r7
+I need to calulate the c position based on whether or not there are enemies in adjacent squares, if so then
+the c position will be the current position minus or plus 1.
+The r position will need to be calculated in determinance of whether or not there are any friendly units in the frontal
+square, or the second square up if it is located in the starting position.
+Row or r will be calulated to be '- 1', unless it is moving up two spaces from the stating position the r will be '- 2'.
+Column or c will be calculated as being the same unless there are either one or two captureable pieces at the frontal, diagnal
+locations, where column or c, will be calculated as either '-1', or '+ 1'.
+All positive and negative positions will be calculated in reverse for the opposition.
+
+let t = parentElement.id;
+1. always accept this as a possible move point, then if its block no move.
+`c${t.charAt(1)+0}r${t.charAt(0)-1}`
+2. if (t.charAt == 6) move here  `c${t.charAt(1)+0}r${t.charAt(0)-2}`
+3. if (equated contains a child) `c${t.charAt(1)-1}r${t.charAt(0)-1}`
+4. if (equated contains a child) `c${t.charAt(1)+1}r${t.charAt(0)-1}`
+*/
