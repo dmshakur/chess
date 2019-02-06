@@ -1,35 +1,20 @@
-const moves = {
-  "king": 8,
-  "queen": 8,
-  "rook": 4,
-  "bishop": 4,
-  "knight": 8,
-  "pawn": 4
-} // Will probably delete
-let globalId = [];
-let globalPiece = "";
-
+let moveArr = [];
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
 function drag(ev) {
+  moveArr = pawn(ev.target.parentNode.id);
   ev.dataTransfer.setData("text", ev.target.id);
-  globalPiece = "";
-  globalId = [];
-  globalPiece = ev.target.className;
-  globalId = pawn(ev.target);
 }
 
 function drop(ev) {
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
-
-  for (var i = 0; i < globalId.length; i++) {
-    if (ev.target.id == globalId[i]) {
+  for (let i = 0; i < moveArr.length; i++) {
+    if ((moveArr[i] == ev.target.id) || (moveArr[i] == ev.target.id)) {
+      //=============
       if (ev.target.id.charAt(0) == data.charAt(0)) { //This if statement is the IFF
-        globalId = [];
-        globalPiece = "";
         return;
 
       } else if (ev.target.id.charAt(0) != 'c') { //This else if statement removes the opposing piece while checking the first letter in the id, if it is c then it is an empty tile
@@ -40,12 +25,10 @@ function drop(ev) {
         ev.preventDefault();
         ev.target.appendChild(document.getElementById(data));
       }
-    } else {
-      continue;
+      //============
     }
   }
-  globalId = [];
-  globalPiece = "";
+  moveArr = [];
 }
 //+=============================+//
 function generateChessBoard() {
@@ -106,18 +89,23 @@ function generateChessPieces() {
 }
 
 function pawn(t) {
+  let one = Number(t[1]);
+  let three = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`c${t.charAt(1)}r${t.charAt(3)-1}`, `c${t.charAt(1)}r${t.charAt(3)-2}`, `c${(t.charAt(1))-1}r${t.charAt(3)-1}`, `c${(t.charAt(1))+1}r${t.charAt(3)-1}`];
-
-  if ($(`#${arr[2]}`).children().length == 0) {
-    arr.filter(string => string != arr[2]);
+  let arr = [`c${one}r${three-1}`, `c${one}r${three-2}`, `c${one-1}r${three-1}`, `c${one+1}r${three-1}`];
+  if (($(`#c${one+1}r${three-1}`).children().length) == 0) {
+    arr[3] = null;
   }
-  if ($(`#${arr[3]}`).children().length == 0) {
-    arr.filter(string => string != arr[3]);
+  if ($(`#c${one-1}r${three-1}`).children().length == 0) {
+    arr[2] = null;
   }
-  if (t.charAt(3) != 6) {
-    arr.filter(string => string != arr[1]);
+  if (three != 6) {
+    arr[1] = null;
   }
+  if (($(`#c${one}r${three-1}`).children().length) != 0) {
+    arr[0] = null;
+  }
+  console.log(arr);
   return arr;
 }
 
