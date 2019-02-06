@@ -5,6 +5,7 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
+  console.log(ev.target.className);
   let pieceFunk = window[ev.target.id.slice(1, -1)];
   moveArr = pieceFunk(ev.target.parentNode.id);
   ev.dataTransfer.setData("text", ev.target.id);
@@ -64,8 +65,8 @@ function generateChessPieces() {
   //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
 
   for (var i = 0; i < 8; i++) {
-    $(`#c${i}r6`).append(`<img id="_wPawn${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
-    $(`#c${i}r1`).append(`<img id="_bPawn${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
+    $(`#c${i}r6`).append(`<img id="wPawn${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
+    $(`#c${i}r1`).append(`<img id="bpawn${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
   //Generate black pieces below
   $('#c0r7').append('<img id="wRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
@@ -98,7 +99,7 @@ function generateChessPieces() {
 }
 // Complete
 
-function wPawn(t) {
+function /*White*/Pawn(t) {
   let column = Number(t[1]);
   let row = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
@@ -119,7 +120,7 @@ function wPawn(t) {
 }
 // Complete
 
-function bPawn(t) {
+function /*Black*/pawn(t) {
   let column = Number(t[1]);
   let row = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
@@ -156,7 +157,7 @@ function Bishop(t) {
 
   let arr = []; // Will contain all possible moves after function completion
 
-  for (let i = 0; i < 8 ; i++) {
+  for (let i = 0; i < 8; i++) {
     if (($(`c${column + i}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
       arr.push(`c${column + i}r${row - i}`);
       // North west lane
@@ -167,8 +168,8 @@ function Bishop(t) {
         loopSwitch[0] = 0;
     }
 
-    if (($(`c${column + 1}r${row + 1}`).children().length == 0) && (loopSwitch[1] == 1)) {
-      arr.push(`c${column + 1}r${row + 1}`);
+    if (($(`c${column + i}r${row + i}`).children().length == 0) && (loopSwitch[1] == 1)) {
+      arr.push(`c${column + i}r${row + i}`);
       // South east lane
       if (column + i > 7 && row + i > 7) {
         loopSwitch[1] = 0;
@@ -200,7 +201,7 @@ function Bishop(t) {
   console.log(arr);
   return arr;
 }
-// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
+// Complete
 
 function Rook(t) {
 
@@ -254,7 +255,7 @@ function Rook(t) {
   console.log(arr);
   return arr;
 }
-// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
+// Complete
 
 function Queen(t) {
 
@@ -316,8 +317,8 @@ function Queen(t) {
         loopSwitch[4] = 0;
       }
 
-    if (($(`c${column + 1}r${row + 1}`).children().length == 0) && (loopSwitch[5] == 1)) {
-      arr.push(`c${column + 1}r${row + 1}`);
+    if (($(`c${column + i}r${row + i}`).children().length == 0) && (loopSwitch[5] == 1)) {
+      arr.push(`c${column + i}r${row + i}`);
       // South east lane
       if (column + i > 7 && row + i > 7) {
         loopSwitch[5] = 0;
@@ -348,7 +349,7 @@ function Queen(t) {
   }
   return arr;
 }
-// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
+// Complete
 
 function King(t) {
   let column = Number(t[1]);
