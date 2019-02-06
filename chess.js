@@ -168,17 +168,46 @@ function Knight(t) {
 // Complete
 
 function Bishop(t) {
-  /*
 
-  */
 }
 
 function Rook(t) {
-  /*
-  A bit simpler than the rest. It will have a r position that will not change but the c position will
-  be any c position on the board, barring blocking pieces. The exact reverse will function just as well.
-  */
+
+  let one = Number(t[1]);
+  let three = Number(t[3]);
+  let guard = [1, 1, 1, 1];
+
+  let arr = []; // Will contain all possible moves after function completion
+
+  for (let i = 0; i < 8; i++) {
+
+    if (($(`#c${one}r${three-i}`).children().length == 0) && (guard[0] == 1)) {
+      arr.push(`#c${one}r${three - i}`);
+      // North lane
+    } else {
+      guard[0] = 0;
+    }
+    if (($(`#c${one+i}r${three}`).children().length == 0) && (guard[1] == 1)) {
+      arr.push(`#c${one + i}r${three}`);
+      // East lane
+    } else {
+      guard[1] = 0;
+    }
+    if (($(`#c${one}r${three - i}`).children().length == 0) && (guard[2] == 1)) {
+      arr.push(`#c${one}r${three - i}`);
+      // South lane
+    } else {
+      guard[2] = 0;
+    }
+    if (($(`#c${one + i}r${three}`).children().length == 0) && (guard[3] == 1)) {
+      arr.push(`#c${one + i}r${three}`);
+      // West lane
+    } else {
+      guard[3] = 0;
+    }
+  }
 }
+// Complete
 
 function Queen(t) {
   /*
@@ -202,7 +231,15 @@ function King(t) {
   let one = Number(t[1]);
   let three = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`c${one-1}r${three-1}`, `c${one+0}r${three-1}`, `c${one-1}r${three-1}`, `c${one+1}r${three+0}`, `c${one+1}r${three+1}`, `c${one+0}r${three+1}`, `c${one-1}r${three+1}`, `c${one-1}r${three+0}`];
+  let arr = [`
+      c${one - 1}r${three - 1}`, `
+      c${one + 0}r${three - 1}`, `
+      c${one - 1}r${three - 1}`, `
+      c${one + 1}r${three + 0}`, `
+      c${one + 1}r${three + 1}`, `
+      c${one + 0}r${three + 1}`, `
+      c${one - 1}r${three + 1}`, `
+      c${one - 1}r${three + 0}`];
 
   return arr;
 }
@@ -234,8 +271,36 @@ All positive and negative positions will be calculated in reverse for the opposi
 
 let t = parentElement.id;
 1. always accept this as a possible move point, then if its block no move.
-`c${t.charAt(1)+0}r${t.charAt(0)-1}`
-2. if (t.charAt == 6) move here  `c${t.charAt(1)+0}r${t.charAt(0)-2}`
-3. if (equated contains a child) `c${t.charAt(1)-1}r${t.charAt(0)-1}`
-4. if (equated contains a child) `c${t.charAt(1)+1}r${t.charAt(0)-1}`
+`
+      c$ {
+        t.charAt(1) + 0
+      }
+      r$ {
+        t.charAt(0) - 1
+      }
+      `
+2. if (t.charAt == 6) move here  `
+      c$ {
+        t.charAt(1) + 0
+      }
+      r$ {
+        t.charAt(0) - 2
+      }
+      `
+3. if (equated contains a child) `
+      c$ {
+        t.charAt(1) - 1
+      }
+      r$ {
+        t.charAt(0) - 1
+      }
+      `
+4. if (equated contains a child) `
+      c$ {
+        t.charAt(1) + 1
+      }
+      r$ {
+        t.charAt(0) - 1
+      }
+      `
 */
