@@ -1,20 +1,21 @@
 let moveArr = [];
-//Complete
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
 }
-// Complete
 
 function drag(ev) {
   let pieceFunk = window[ev.target.id.slice(1, -1)];
-  console.log(pieceFunk);
   moveArr = pieceFunk(ev.target.parentNode.id);
   ev.dataTransfer.setData("text", ev.target.id);
 }
-// Complete
 
 function drop(ev) {
+  for (let i = 0; i < moveArr.length; i++) {
+    if (moveArr[i] != null) {
+      moveArr[i].replace("-", "");
+    }
+  }
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
   for (let i = 0; i < moveArr.length; i++) {
 
@@ -37,13 +38,12 @@ function drop(ev) {
   }
   moveArr = [];
 }
-// Complete
 //+=============================+//
 function generateChessBoard() {
   /*Loops through each column then through each row in that column, then repeats
   Until the board is filled up with tiles and divs
   with specific ids determining the row and column with a c & r followed by a number for each*/
-  $('body').append('<div id="chessBoard"></div>')
+  $('body').append('<div id="chessBoard"></div>');
   for (var i = 0; i < 8; i++) {
     $('#chessBoard').append(`<div class="column" id="c${i}"></div>`);
     for (var j = 0; j < 8; j++) {
@@ -99,20 +99,20 @@ function generateChessPieces() {
 // Complete
 
 function wPawn(t) {
-  let one = Number(t[1]);
-  let three = Number(t[3]);
+  let column = Number(t[1]);
+  let row = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`c${one}r${three-1}`, `c${one}r${three-2}`, `c${one-1}r${three-1}`, `c${one+1}r${three-1}`];
-  if (($(`#c${one+1}r${three-1}`).children().length) == 0) {
+  let arr = [`c${column}r${row-1}`, `c${column}r${row-2}`, `c${column-1}r${row-1}`, `c${column+1}r${row-1}`];
+  if (($(`#c${column+1}r${row-1}`).children().length) == 0) {
     arr[3] = null;
   }
-  if ($(`#c${one-1}r${three-1}`).children().length == 0) {
+  if ($(`#c${column-1}r${row-1}`).children().length == 0) {
     arr[2] = null;
   }
-  if (three != 6) {
+  if (row != 6) {
     arr[1] = null;
   }
-  if (($(`#c${one}r${three-1}`).children().length) != 0) {
+  if (($(`#c${column}r${row-1}`).children().length) != 0) {
     arr[0] = null;
   }
   return arr;
@@ -120,20 +120,20 @@ function wPawn(t) {
 // Complete
 
 function bPawn(t) {
-  let one = Number(t[1]);
-  let three = Number(t[3]);
+  let column = Number(t[1]);
+  let row = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`c${one}r${three+1}`, `c${one}r${three+2}`, `c${one+1}r${three+1}`, `c${one-1}r${three+1}`];
-  if (($(`#c${one-1}r${three+1}`).children().length) == 0) {
+  let arr = [`c${column}r${row+1}`, `c${column}r${row+2}`, `c${column+1}r${row+1}`, `c${column-1}r${row+1}`];
+  if (($(`#c${column-1}r${row+1}`).children().length) == 0) {
     arr[3] = null;
   }
-  if ($(`#c${one+1}r${three+1}`).children().length == 0) {
+  if ($(`#c${column+1}r${row+1}`).children().length == 0) {
     arr[2] = null;
   }
-  if (three != 1) {
+  if (row != 1) {
     arr[1] = null;
   }
-  if (($(`#c${one}r${three+1}`).children().length) != 0) {
+  if (($(`#c${column}r${row+1}`).children().length) != 0) {
     arr[0] = null;
   }
   return arr;
@@ -141,106 +141,219 @@ function bPawn(t) {
 // Complete
 
 function Knight(t) {
-  /*
-    Made a diagram for this particular piece since it would be less accurateley interpretable.
-    But I will lay out the calculations for the possible movements.
-    Going clockwise around starting with the upper left possible move position.
-    Assuming you're looking at the board from the white side and that up is towards row 0.
-      ----c--r
-      0. -1 -2
-      1. +1 -2
-      2. +2 -1
-      3. +2 +1
-      4. +1 +2
-      5. -1 +2
-      6. -2 +2
-      7. -2 -1
-      --------
-      Calculations will work for both black and white, negating possible positions with allied pieces and negative or 8 plus positions.
-  */
-  let one = Number(t[1]);
-  let three = Number(t[3]);
+  let column = Number(t[1]);
+  let row = Number(t[3]);
   // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`c${one-1}r${three-2}`, `c${one+1}r${three-2}`, `c${one+2}r${three-1}`, `c${one+2}r${three+1}`, `c${one+1}r${three+2}`, `c${one-1}r${three+2}`, `c${one-2}r${three+2}`, `c${one-2}r${three-1}`];
-
+  let arr = [`c${column-1}r${row-2}`, `c${column+1}r${row-2}`, `c${column+2}r${row-1}`, `c${column+2}r${row+1}`, `c${column+1}r${row+2}`, `c${column-1}r${row+2}`, `c${column-2}r${row+1}`, `c${column-2}r${row-1}`];
   return arr;
 }
 // Complete
 
 function Bishop(t) {
-
-}
-
-function Rook(t) {
-
-  let one = Number(t[1]);
-  let three = Number(t[3]);
-  let guard = [1, 1, 1, 1];
+  let column = Number(t[1]);
+  let row = Number(t[3]);
+  let loopSwitch = [1, 1, 1, 1];
 
   let arr = []; // Will contain all possible moves after function completion
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 8 ; i++) {
+    if (($(`c${column + i}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
+      arr.push(`c${column + i}r${row - i}`);
+      // North west lane
+      if (column + i > 7 && row - i < 0) {
+        loopSwitch[0] = 0;
+      }
+    } else {
+        loopSwitch[0] = 0;
+    }
 
-    if (($(`#c${one}r${three-i}`).children().length == 0) && (guard[0] == 1)) {
-      arr.push(`#c${one}r${three - i}`);
-      // North lane
+    if (($(`c${column + 1}r${row + 1}`).children().length == 0) && (loopSwitch[1] == 1)) {
+      arr.push(`c${column + 1}r${row + 1}`);
+      // South east lane
+      if (column + i > 7 && row + i > 7) {
+        loopSwitch[1] = 0;
+      }
     } else {
-      guard[0] = 0;
+      loopSwitch[1] = 0;
     }
-    if (($(`#c${one+i}r${three}`).children().length == 0) && (guard[1] == 1)) {
-      arr.push(`#c${one + i}r${three}`);
-      // East lane
+
+    if (($(`c${column - i}r${row + i}`).children().length == 0) && (loopSwitch[2] == 1)) {
+      arr.push(`c${column - i}r${row + i}`);
+      // South west lane
+      if (column - i < 0 && row + i > 7) {
+        loopSwitch[2] = 0;
+      }
     } else {
-      guard[1] = 0;
+      loopSwitch[2] = 0;
     }
-    if (($(`#c${one}r${three - i}`).children().length == 0) && (guard[2] == 1)) {
-      arr.push(`#c${one}r${three - i}`);
-      // South lane
+
+    if (($(`c${column - i}r${row - i}`).children().length == 0) && (loopSwitch[3] == 1)) {
+      arr.push(`c${column - i}r${row - i}`);
+      // North west lane
+      if (column -i < 0 && row - i > 7) {
+        loopSwitch[3] = 0;
+      }
     } else {
-      guard[2] = 0;
-    }
-    if (($(`#c${one + i}r${three}`).children().length == 0) && (guard[3] == 1)) {
-      arr.push(`#c${one + i}r${three}`);
-      // West lane
-    } else {
-      guard[3] = 0;
+      loopSwitch[3] = 0;
     }
   }
+  console.log(arr);
+  return arr;
 }
-// Complete
+// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
+
+function Rook(t) {
+
+  let column = Number(t[1]);
+  let row = Number(t[3]);
+  let loopSwitch = [1, 1, 1, 1];
+
+  let arr = []; // Will contain all possible moves after function completion
+
+  for (let i = 0; i < 8 ; i++) {
+    if (($(`c${column}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
+      arr.push(`c${column}r${row - i}`);
+      // North lane
+      if (row - i < 0) {
+        loopSwitch[0] = 0;
+      }
+    } else {
+      loopSwitch[0] = 0;
+    }
+
+    if (($(`c${column - i}r${row}`).children().length == 0) && (loopSwitch[1] == 1)) {
+      arr.push(`c${column - i}r${row}`);
+      // East lane
+      if (column - i < 0) {
+        loopSwitch[1] = 0;
+      }
+    } else {
+      loopSwitch[1] = 0;
+    }
+
+    if (($(`c${column}r${row + i}`).children().length == 0) && (loopSwitch[2] == 1)) {
+      arr.push(`c${column}r${row + i}`);
+      // South lane
+      if (row + i > 7) {
+        loopSwitch[2] = 0;
+      }
+    } else {
+      loopSwitch[2] = 0;
+    }
+
+    if (($(`c${column + i}r${row}`).children().length == 0) && (loopSwitch[3] == 1)) {
+      arr.push(`c${column + i}r${row}`);
+      // West lane
+      if (column + i > 7) {
+        loopSwitch[3] = 0;
+      }
+    } else {
+      loopSwitch[3] = 0;
+    }
+  }
+  console.log(arr);
+  return arr;
+}
+// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
 
 function Queen(t) {
-  /*
-  Combine rook and bishop position calculation.
-  */
+
+  let column = Number(t[1]);
+  let row = Number(t[3]);
+  let loopSwitch = [1, 1, 1, 1, 1, 1, 1, 1];
+
+  let arr = []; // Will contain all possible moves after function completion
+
+  for (let i = 0; i < 8 ; i++) {
+    if (($(`c${column}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
+      arr.push(`c${column}r${row - i}`);
+      // North lane
+      if (row - i < 0) {
+        loopSwitch[0] = 0;
+      }
+    } else {
+      loopSwitch[0] = 0;
+    }
+
+    if (($(`c${column - i}r${row}`).children().length == 0) && (loopSwitch[1] == 1)) {
+      arr.push(`c${column - i}r${row}`);
+      // East lane
+      if (column - i < 0) {
+        loopSwitch[1] = 0;
+      }
+    } else {
+      loopSwitch[1] = 0;
+    }
+
+    if (($(`c${column}r${row + i}`).children().length == 0) && (loopSwitch[2] == 1)) {
+      arr.push(`c${column}r${row + i}`);
+      // South lane
+      if (row + i > 7) {
+        loopSwitch[2] = 0;
+      }
+    } else {
+      loopSwitch[2] = 0;
+    }
+
+    if (($(`c${column + i}r${row}`).children().length == 0) && (loopSwitch[3] == 1)) {
+      arr.push(`c${column + i}r${row}`);
+      // West lane
+      if (column + i > 7) {
+        loopSwitch[3] = 0;
+      }
+    } else {
+      loopSwitch[3] = 0;
+    }
+
+
+    if (($(`c${column + i}r${row - i}`).children().length == 0) && (loopSwitch[4] == 1)) {
+      arr.push(`c${column + i}r${row - i}`);
+      // North west lane
+      if (column + i > 7 && row - i < 0) {
+        loopSwitch[4] = 0;
+      }
+    } else {
+        loopSwitch[4] = 0;
+      }
+
+    if (($(`c${column + 1}r${row + 1}`).children().length == 0) && (loopSwitch[5] == 1)) {
+      arr.push(`c${column + 1}r${row + 1}`);
+      // South east lane
+      if (column + i > 7 && row + i > 7) {
+        loopSwitch[5] = 0;
+      }
+    } else {
+      loopSwitch[5] = 0;
+    }
+
+    if (($(`c${column - i}r${row + i}`).children().length == 0) && (loopSwitch[6] == 1)) {
+      arr.push(`c${column - i}r${row + i}`);
+      // South west lane
+      if (column - i < 0 && row + i > 7) {
+        loopSwitch[6] = 0;
+      }
+    } else {
+      loopSwitch[6] = 0;
+    }
+
+    if (($(`c${column - i}r${row - i}`).children().length == 0) && (loopSwitch[7] == 1)) {
+      arr.push(`c${column - i}r${row - i}`);
+      // North west lane
+      if (column -i < 0 && row - i > 7) {
+        loopSwitch[7] = 0;
+      }
+    } else {
+      loopSwitch[7] = 0;
+    }
+  }
+  return arr;
 }
+// Complete somewhat=+*+*+*+*+*+*+*+*+*+*+*+*+*
 
 function King(t) {
-  /*
-  ----c--r
-  0. -1 -1
-  1. +0 -1
-  2. -1 -1
-  3. +1 +0
-  4. +1 +1
-  5. +0 +1
-  6. -1 +1
-  7. -1 +0
-  --------
-  */
-  let one = Number(t[1]);
-  let three = Number(t[3]);
-  // Creates an array and filters it depending on whether or not it can make a 2 space move or if there are any squares available for capture
-  let arr = [`
-      c${one - 1}r${three - 1}`, `
-      c${one + 0}r${three - 1}`, `
-      c${one - 1}r${three - 1}`, `
-      c${one + 1}r${three + 0}`, `
-      c${one + 1}r${three + 1}`, `
-      c${one + 0}r${three + 1}`, `
-      c${one - 1}r${three + 1}`, `
-      c${one - 1}r${three + 0}`];
-
+  let column = Number(t[1]);
+  let row = Number(t[3]);
+  let arr = [`c${column - 1}r${row - 1}`, `c${column + 0}r${row - 1}`, `c${column + 1}r${row - 1}`, `c${column + 1}r${row + 0}`, `c${column + 1}r${row + 1}`, `c${column + 0}r${row + 1}`, `c${column - 1}r${row + 1}`, `c${column - 1}r${row + 0}`];
   return arr;
 }
 // Complete
@@ -251,7 +364,19 @@ function checkmate() {
 
 generateChessBoard();
 generateChessPieces();
-/******** PAWN NOTES***************************************************************************************************
+/*
+----c--r
+0. -1 -1
+1. +0 -1
+2. -1 -1
+3. +1 +0
+4. +1 +1
+5. +0 +1
+6. -1 +1
+7. -1 +0
+--------
+*/
+/******** PAWN NOTES********************************************************************************************
 I need to calulate the squares relative to  the position of the pawn and determine which are allowable moving positions
 A pawn can be on starting square as a white piece c1r7 (The second from the left) and would only be
 able to move to c1r6, c1r5 or if there is a piece available for capture then two squares being c0r6 and c2r6
@@ -265,7 +390,7 @@ the c position will be the current position minus or plus 1.
 The r position will need to be calculated in determinance of whether or not there are any friendly units in the frontal
 square, or the second square up if it is located in the starting position.
 Row or r will be calulated to be '- 1', unless it is moving up two spaces from the stating position the r will be '- 2'.
-Column or c will be calculated as being the same unless there are either one or two captureable pieces at the frontal, diagnal
+Column or c will be calculated as being the same unless there are either column or two captureable pieces at the frontal, diagnal
 locations, where column or c, will be calculated as either '-1', or '+ 1'.
 All positive and negative positions will be calculated in reverse for the opposition.
 
@@ -303,4 +428,22 @@ let t = parentElement.id;
         t.charAt(0) - 1
       }
       `
+*/
+/*==========KNIGHT NOTES===================================================================
+Made a diagram for this particular piece since it would be less accurateley interpretable.
+But I will lay out the calculations for the possible movements.
+Going clockwise around starting with the upper left possible move position.
+Assuming you're looking at the board from the white side and that up is towards row 0.
+----c--r
+0. -1 -2
+1. +1 -2
+2. +2 -1
+3. +2 +1
+4. +1 +2
+5. -1 +2
+6. -2 +2
+7. -2 -1
+--------
+Calculations will work for both black and white,
+negating possible positions with allied pieces and negative or 8 plus positions.
 */
