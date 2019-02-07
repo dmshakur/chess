@@ -1,4 +1,5 @@
 let moveArr = [];
+let playersTurn = true;
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
@@ -213,18 +214,19 @@ function Rook(t) {
 
   for (let i = 0; i < 8 ; i++) {
     if (($(`c${column}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
-      arr.push(`c${column}r${row - i}`);
       // North lane
+      arr.push(`c${column}r${row - i}`);
       if (row - i < 0) {
         loopSwitch[0] = 0;
       }
     } else {
       loopSwitch[0] = 0;
     }
+    console.log($(`c${column - i}r${row}`).children().length)
 
     if (($(`c${column - i}r${row}`).children().length == 0) && (loopSwitch[1] == 1)) {
-      arr.push(`c${column - i}r${row}`);
       // East lane
+      arr.push(`c${column - i}r${row}`);
       if (column - i < 0) {
         loopSwitch[1] = 0;
       }
@@ -232,9 +234,9 @@ function Rook(t) {
       loopSwitch[1] = 0;
     }
 
-    if (($(`c${column}r${row + i}`).children().length == 0) && (loopSwitch[2] == 1)) {
-      arr.push(`c${column}r${row + i}`);
+    if (($(`c${column}r${row + i}`).children().length === 0) && (loopSwitch[2] == 1)) {
       // South lane
+      arr.push(`c${column}r${row + i}`);
       if (row + i > 7) {
         loopSwitch[2] = 0;
       }
@@ -243,8 +245,8 @@ function Rook(t) {
     }
 
     if (($(`c${column + i}r${row}`).children().length == 0) && (loopSwitch[3] == 1)) {
-      arr.push(`c${column + i}r${row}`);
       // West lane
+      arr.push(`c${column + i}r${row}`);
       if (column + i > 7) {
         loopSwitch[3] = 0;
       }
@@ -252,7 +254,7 @@ function Rook(t) {
       loopSwitch[3] = 0;
     }
   }
-  console.log(arr);
+  console.log(arr)
   return arr;
 }
 // Complete
