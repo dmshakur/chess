@@ -1,23 +1,16 @@
 let moveArr = [];
-let playersTurn = true;
 //=============================+
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
 function drag(ev) {
-  console.log(ev.target.className);
   let pieceFunk = window[ev.target.id.slice(1, -1)];
   moveArr = pieceFunk(ev.target.parentNode.id);
-  ev.dataTransfer.setData("text", ev.target.id);
+  ev.target.setData("text", ev.target.id);
 }
 
 function drop(ev) {
-  for (let i = 0; i < moveArr.length; i++) {
-    if (moveArr[i] != null) {
-      moveArr[i].replace("-", "");
-    }
-  }
   let data = ev.dataTransfer.getData("text"); // This variable represents the moving piece
   for (let i = 0; i < moveArr.length; i++) {
 
@@ -59,12 +52,8 @@ function generateChessBoard() {
     }
   }
 }
-// Complete
-
 function generateChessPieces() {
-
   //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
-
   for (var i = 0; i < 8; i++) {
     $(`#c${i}r6`).append(`<img id="wPawn${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
     $(`#c${i}r1`).append(`<img id="bpawn${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
@@ -87,6 +76,7 @@ function generateChessPieces() {
   $('#c5r0').append('<img id="bBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
   $('#c6r0').append('<img id="bKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
   $('#c7r0').append('<img id="bRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  // CSS is created below
   $('#chessBoard').css({
     "width": "800px",
     "height": "800px",
@@ -98,7 +88,6 @@ function generateChessPieces() {
     "height": "100px"
   });
 }
-// Complete
 
 function /*White*/Pawn(t) {
   let column = Number(t[1]);
@@ -119,7 +108,6 @@ function /*White*/Pawn(t) {
   }
   return arr;
 }
-// Complete
 
 function /*Black*/pawn(t) {
   let column = Number(t[1]);
@@ -140,7 +128,6 @@ function /*Black*/pawn(t) {
   }
   return arr;
 }
-// Complete
 
 function Knight(t) {
   let column = Number(t[1]);
@@ -149,7 +136,6 @@ function Knight(t) {
   let arr = [`c${column-1}r${row-2}`, `c${column+1}r${row-2}`, `c${column+2}r${row-1}`, `c${column+2}r${row+1}`, `c${column+1}r${row+2}`, `c${column-1}r${row+2}`, `c${column-2}r${row+1}`, `c${column-2}r${row-1}`];
   return arr;
 }
-// Complete
 
 function Bishop(t) {
   let column = Number(t[1]);
@@ -162,7 +148,7 @@ function Bishop(t) {
     if (($(`c${column + i}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
       arr.push(`c${column + i}r${row - i}`);
       // North west lane
-      if (column + i > 7 && row - i < 0) {
+      if (column + i > 7 && row - i < 1) {
         loopSwitch[0] = 0;
       }
     } else {
@@ -182,7 +168,7 @@ function Bishop(t) {
     if (($(`c${column - i}r${row + i}`).children().length == 0) && (loopSwitch[2] == 1)) {
       arr.push(`c${column - i}r${row + i}`);
       // South west lane
-      if (column - i < 0 && row + i > 7) {
+      if (column - i < 1 && row + i > 7) {
         loopSwitch[2] = 0;
       }
     } else {
@@ -192,7 +178,7 @@ function Bishop(t) {
     if (($(`c${column - i}r${row - i}`).children().length == 0) && (loopSwitch[3] == 1)) {
       arr.push(`c${column - i}r${row - i}`);
       // North west lane
-      if (column -i < 0 && row - i > 7) {
+      if (column - i < 1 && row - i > 1) {
         loopSwitch[3] = 0;
       }
     } else {
@@ -202,7 +188,6 @@ function Bishop(t) {
   console.log(arr);
   return arr;
 }
-// Complete
 
 function Rook(t) {
 
@@ -211,32 +196,30 @@ function Rook(t) {
   let loopSwitch = [1, 1, 1, 1];
 
   let arr = []; // Will contain all possible moves after function completion
-
   for (let i = 0; i < 8 ; i++) {
-    if (($(`c${column}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
-      // North lane
+    if (true) {
       arr.push(`c${column}r${row - i}`);
-      if (row - i < 0) {
+      // North lane
+      if (row - i < 1) {
         loopSwitch[0] = 0;
       }
     } else {
       loopSwitch[0] = 0;
     }
-    console.log($(`c${column - i}r${row}`).children().length)
 
-    if (($(`c${column - i}r${row}`).children().length == 0) && (loopSwitch[1] == 1)) {
-      // East lane
+    if (true) {
       arr.push(`c${column - i}r${row}`);
-      if (column - i < 0) {
+      // East lane
+      if (column - i < 1) {
         loopSwitch[1] = 0;
       }
     } else {
       loopSwitch[1] = 0;
     }
 
-    if (($(`c${column}r${row + i}`).children().length === 0) && (loopSwitch[2] == 1)) {
-      // South lane
+    if (true) {
       arr.push(`c${column}r${row + i}`);
+      // South lane
       if (row + i > 7) {
         loopSwitch[2] = 0;
       }
@@ -244,9 +227,9 @@ function Rook(t) {
       loopSwitch[2] = 0;
     }
 
-    if (($(`c${column + i}r${row}`).children().length == 0) && (loopSwitch[3] == 1)) {
-      // West lane
+    if (true) {
       arr.push(`c${column + i}r${row}`);
+      // West lane
       if (column + i > 7) {
         loopSwitch[3] = 0;
       }
@@ -254,10 +237,9 @@ function Rook(t) {
       loopSwitch[3] = 0;
     }
   }
-  console.log(arr)
+  console.log(arr);
   return arr;
 }
-// Complete
 
 function Queen(t) {
 
@@ -271,7 +253,7 @@ function Queen(t) {
     if (($(`c${column}r${row - i}`).children().length == 0) && (loopSwitch[0] == 1)) {
       arr.push(`c${column}r${row - i}`);
       // North lane
-      if (row - i < 0) {
+      if (row - i < 1) {
         loopSwitch[0] = 0;
       }
     } else {
@@ -281,7 +263,7 @@ function Queen(t) {
     if (($(`c${column - i}r${row}`).children().length == 0) && (loopSwitch[1] == 1)) {
       arr.push(`c${column - i}r${row}`);
       // East lane
-      if (column - i < 0) {
+      if (column - i < 1) {
         loopSwitch[1] = 0;
       }
     } else {
@@ -312,7 +294,7 @@ function Queen(t) {
     if (($(`c${column + i}r${row - i}`).children().length == 0) && (loopSwitch[4] == 1)) {
       arr.push(`c${column + i}r${row - i}`);
       // North west lane
-      if (column + i > 7 && row - i < 0) {
+      if (column + i > 7 && row - i < 1) {
         loopSwitch[4] = 0;
       }
     } else {
@@ -332,7 +314,7 @@ function Queen(t) {
     if (($(`c${column - i}r${row + i}`).children().length == 0) && (loopSwitch[6] == 1)) {
       arr.push(`c${column - i}r${row + i}`);
       // South west lane
-      if (column - i < 0 && row + i > 7) {
+      if (column - i < 1 && row + i > 7) {
         loopSwitch[6] = 0;
       }
     } else {
@@ -342,7 +324,7 @@ function Queen(t) {
     if (($(`c${column - i}r${row - i}`).children().length == 0) && (loopSwitch[7] == 1)) {
       arr.push(`c${column - i}r${row - i}`);
       // North west lane
-      if (column -i < 0 && row - i > 7) {
+      if (column - i < 1 && row - i > 7) {
         loopSwitch[7] = 0;
       }
     } else {
@@ -351,7 +333,6 @@ function Queen(t) {
   }
   return arr;
 }
-// Complete
 
 function King(t) {
   let column = Number(t[1]);
@@ -359,94 +340,6 @@ function King(t) {
   let arr = [`c${column - 1}r${row - 1}`, `c${column + 0}r${row - 1}`, `c${column + 1}r${row - 1}`, `c${column + 1}r${row + 0}`, `c${column + 1}r${row + 1}`, `c${column + 0}r${row + 1}`, `c${column - 1}r${row + 1}`, `c${column - 1}r${row + 0}`];
   return arr;
 }
-// Complete
-
-function checkmate() {
-
-}
 
 generateChessBoard();
 generateChessPieces();
-/*
-----c--r
-0. -1 -1
-1. +0 -1
-2. -1 -1
-3. +1 +0
-4. +1 +1
-5. +0 +1
-6. -1 +1
-7. -1 +0
---------
-*/
-/******** PAWN NOTES********************************************************************************************
-I need to calulate the squares relative to  the position of the pawn and determine which are allowable moving positions
-A pawn can be on starting square as a white piece c1r7 (The second from the left) and would only be
-able to move to c1r6, c1r5 or if there is a piece available for capture then two squares being c0r6 and c2r6
-       c1r5
-        I
-  c0r6 c1r6 c2r6
-     \  I  /
-      c1r7
-I need to calulate the c position based on whether or not there are enemies in adjacent squares, if so then
-the c position will be the current position minus or plus 1.
-The r position will need to be calculated in determinance of whether or not there are any friendly units in the frontal
-square, or the second square up if it is located in the starting position.
-Row or r will be calulated to be '- 1', unless it is moving up two spaces from the stating position the r will be '- 2'.
-Column or c will be calculated as being the same unless there are either column or two captureable pieces at the frontal, diagnal
-locations, where column or c, will be calculated as either '-1', or '+ 1'.
-All positive and negative positions will be calculated in reverse for the opposition.
-
-let t = parentElement.id;
-1. always accept this as a possible move point, then if its block no move.
-`
-      c$ {
-        t.charAt(1) + 0
-      }
-      r$ {
-        t.charAt(0) - 1
-      }
-      `
-2. if (t.charAt == 6) move here  `
-      c$ {
-        t.charAt(1) + 0
-      }
-      r$ {
-        t.charAt(0) - 2
-      }
-      `
-3. if (equated contains a child) `
-      c$ {
-        t.charAt(1) - 1
-      }
-      r$ {
-        t.charAt(0) - 1
-      }
-      `
-4. if (equated contains a child) `
-      c$ {
-        t.charAt(1) + 1
-      }
-      r$ {
-        t.charAt(0) - 1
-      }
-      `
-*/
-/*==========KNIGHT NOTES===================================================================
-Made a diagram for this particular piece since it would be less accurateley interpretable.
-But I will lay out the calculations for the possible movements.
-Going clockwise around starting with the upper left possible move position.
-Assuming you're looking at the board from the white side and that up is towards row 0.
-----c--r
-0. -1 -2
-1. +1 -2
-2. +2 -1
-3. +2 +1
-4. +1 +2
-5. -1 +2
-6. -2 +2
-7. -2 -1
---------
-Calculations will work for both black and white,
-negating possible positions with allied pieces and negative or 8 plus positions.
-*/
