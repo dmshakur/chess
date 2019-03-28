@@ -7,7 +7,7 @@ function allowDrop(ev) {
 function drag(ev) {
   let pieceFunk = window[ev.target.id.slice(1, -1)];
   moveArr = pieceFunk(ev.target.parentNode.id);
-  ev.target.setData("text", ev.target.id);
+  ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function drop(ev) {
@@ -52,30 +52,24 @@ function generateChessBoard() {
     }
   }
 }
+
 function generateChessPieces() {
   //Loops through the pawn row (row 6 for white 1 for black) and adds images to each tile
   for (var i = 0; i < 8; i++) {
-    $(`#c${i}r6`).append(`<img id="wPawn${i}" class="white" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
-    $(`#c${i}r1`).append(`<img id="bpawn${i}" class="black" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
+    $(`#c${i}r6`).append(`<img id="wPawn${i}" ondragstart="drag(event)" draggable="true" src="svg/wPawn.svg">`);
+    $(`#c${i}r1`).append(`<img id="bpawn${i}" ondragstart="drag(event)" draggable="true" src="svg/bPawn.svg">`);
   }
-  //Generate black pieces below
-  $('#c0r7').append('<img id="wRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
-  $('#c1r7').append('<img id="wKnight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
-  $('#c2r7').append('<img id="wBishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
-  $('#c3r7').append('<img id="wQueen0" class="queen" ondragstart="drag(event)" draggable="true" src="svg/wQueen.svg">');
-  $('#c4r7').append('<img id="wKing0" class="king" ondragstart="drag(event)" draggable="true" src="svg/wKing.svg">');
-  $('#c5r7').append('<img id="wBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/wBishop.svg">');
-  $('#c6r7').append('<img id="wKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/wKnight.svg">');
-  $('#c7r7').append('<img id="wRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/wRook.svg">');
-  //Generate white pieces below
-  $('#c0r0').append('<img id="bRook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
-  $('#c1r0').append('<img id="bKnight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
-  $('#c2r0').append('<img id="bBishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
-  $('#c3r0').append('<img id="bQueen0" class="queen" ondragstart="drag(event)" draggable="true" src="svg/bQueen.svg">');
-  $('#c4r0').append('<img id="bKing0" class="king" ondragstart="drag(event)" draggable="true" src="svg/bKing.svg">');
-  $('#c5r0').append('<img id="bBishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/bBishop.svg">');
-  $('#c6r0').append('<img id="bKnight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/bKnight.svg">');
-  $('#c7r0').append('<img id="bRook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/bRook.svg">');
+  for (var i = 0; i < 2; i++) {
+    var r = [['b', 0], ['w', 7]];
+      $(`#c0r${r[i][1]}`).append(`<img id="${[i][0]}Rook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
+      $(`#c1r${r[i][1]}`).append(`<img id="${[i][0]}Knight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
+      $(`#c2r${r[i][1]}`).append(`<img id="${[i][0]}Bishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
+      $(`#c3r${r[i][1]}`).append(`<img id="${[i][0]}Queen0" class="queen" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Queen.svg">`);
+      $(`#c4r${r[i][1]}`).append(`<img id="${[i][0]}King0" class="king" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}King.svg">`);
+      $(`#c5r${r[i][1]}`).append(`<img id="${[i][0]}Bishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
+      $(`#c6r${r[i][1]}`).append(`<img id="${[i][0]}Knight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
+      $(`#c7r${r[i][1]}`).append(`<img id="${[i][0]}Rook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
+  }
   // CSS is created below
   $('#chessBoard').css({
     "width": "800px",
@@ -217,7 +211,7 @@ function Rook(t) {
       loopSwitch[1] = 0;
     }
 
-    if (true) {
+    if ($(`#c${column}r${row + i}`).is(':empty') && loopSwitch == 1) {
       arr.push(`c${column}r${row + i}`);
       // South lane
       if (row + i > 7) {
@@ -237,7 +231,6 @@ function Rook(t) {
       loopSwitch[3] = 0;
     }
   }
-  console.log(arr);
   return arr;
 }
 
