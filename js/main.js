@@ -61,14 +61,14 @@ function generateChessPieces() {
   }
   for (var i = 0; i < 2; i++) {
     var r = [['b', 0], ['w', 7]];
-      $(`#c0r${r[i][1]}`).append(`<img id="${[i][0]}Rook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
-      $(`#c1r${r[i][1]}`).append(`<img id="${[i][0]}Knight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
-      $(`#c2r${r[i][1]}`).append(`<img id="${[i][0]}Bishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
-      $(`#c3r${r[i][1]}`).append(`<img id="${[i][0]}Queen0" class="queen" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Queen.svg">`);
-      $(`#c4r${r[i][1]}`).append(`<img id="${[i][0]}King0" class="king" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}King.svg">`);
-      $(`#c5r${r[i][1]}`).append(`<img id="${[i][0]}Bishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
-      $(`#c6r${r[i][1]}`).append(`<img id="${[i][0]}Knight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
-      $(`#c7r${r[i][1]}`).append(`<img id="${[i][0]}Rook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
+    $(`#c0r${r[i][1]}`).append(`<img id="${[i][0]}Rook0" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
+    $(`#c1r${r[i][1]}`).append(`<img id="${[i][0]}Knight0" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
+    $(`#c2r${r[i][1]}`).append(`<img id="${[i][0]}Bishop0" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
+    $(`#c3r${r[i][1]}`).append(`<img id="${[i][0]}Queen0" class="queen" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Queen.svg">`);
+    $(`#c4r${r[i][1]}`).append(`<img id="${[i][0]}King0" class="king" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}King.svg">`);
+    $(`#c5r${r[i][1]}`).append(`<img id="${[i][0]}Bishop1" class="bishop" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Bishop.svg">`);
+    $(`#c6r${r[i][1]}`).append(`<img id="${[i][0]}Knight1" class="knight" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Knight.svg">`);
+    $(`#c7r${r[i][1]}`).append(`<img id="${[i][0]}Rook1" class="rook" ondragstart="drag(event)" draggable="true" src="svg/${r[i][0]}Rook.svg">`);
   }
   // CSS is created below
   $('#chessBoard').css({
